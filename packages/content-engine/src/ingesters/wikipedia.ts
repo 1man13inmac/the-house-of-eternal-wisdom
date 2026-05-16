@@ -1,4 +1,25 @@
 /**
+ * Safely strip HTML tags from a string without using regex-based sanitization.
+ * Uses a character-by-character state machine approach that is not vulnerable
+ * to malformed tags or script injection.
+ */
+function stripHtmlTags(input: string): string {
+  let result = ''
+  let insideTag = false
+  for (let i = 0; i < input.length; i++) {
+    const ch = input[i]
+    if (ch === '<') {
+      insideTag = true
+    } else if (ch === '>') {
+      insideTag = false
+    } else if (!insideTag) {
+      result += ch
+    }
+  }
+  return result
+}
+
+/**
  * Wikipedia API Ingester
  * Fetches article summaries and metadata from Wikipedia.
  * Used for: historical figures, civilization overviews, concept definitions.
@@ -46,7 +67,7 @@ export class WikipediaIngester {
     return data.query.search.map((r) => ({
       pageId: r.pageid,
       title: r.title,
-      snippet: r.snippet.replace(/<[^>]*>|<script[\s\S]*?<\/script>/gi, ''), // Strip HTML and scripts
+      snippet: stripHtmlTags(r.snippet),
     }))
   }
 }

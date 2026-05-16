@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
       confidence: 'HISTORICAL_CONSENSUS',
       citations: [],
     })
-  } catch {
+  } catch (error) {
+    console.error('[AI Route Error]', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

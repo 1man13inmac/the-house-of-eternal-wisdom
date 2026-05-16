@@ -77,8 +77,8 @@ export function parseSearchQuery(query: string): {
   }
 
   // Extract key:value filters (e.g., civilization:greek difficulty:seed)
-  // Use a non-backtracking pattern to avoid ReDoS
-  const filterRegex = /([A-Za-z]\w*):([A-Za-z]\w*)/g
+  // Bounded quantifiers prevent ReDoS; keys/values max 50 chars
+  const filterRegex = /([A-Za-z][A-Za-z0-9_]{0,49}):([A-Za-z][A-Za-z0-9_]{0,49})/g
   while ((match = filterRegex.exec(remaining)) !== null) {
     filters[match[1]] = match[2]
     remaining = remaining.replace(match[0], '')
