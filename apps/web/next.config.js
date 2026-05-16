@@ -1,14 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
+  output: 'standalone',
   images: {
-    domains: [
-      'images.unsplash.com',
-      'upload.wikimedia.org',
-      'archive.org',
-      'covers.openlibrary.org',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'archive.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'covers.openlibrary.org',
+      },
     ],
   },
   async headers() {

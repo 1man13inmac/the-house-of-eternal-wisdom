@@ -35,18 +35,27 @@ NEXT_PUBLIC_APP_URL=https://your-domain.com
 ## Deployment Steps
 
 1. Connect GitHub repository to Vercel
-2. Set root directory to `apps/web`
-3. Configure build command: `cd ../.. && pnpm build --filter @living-library/web`
-4. Configure install command: `pnpm install`
-5. Add environment variables
-6. Deploy
+2. Set project root directory to repository root (`.`)
+3. Set framework preset to Next.js
+4. Configure install command: `pnpm install --frozen-lockfile`
+5. Configure build command: `pnpm --filter @living-library/web build`
+6. Configure output directory: leave default (Next.js)
+7. Add environment variables
+8. Deploy
+
+## Recommended Runtime
+
+- Node.js 20.x on Vercel
+- pnpm 8.x (matches `packageManager` in root `package.json`)
+- Commit `pnpm-lock.yaml` to guarantee reproducible installs in CI and production
 
 ## Admin App
 
 Deploy `apps/admin` as a separate Vercel project:
-1. Set root directory to `apps/admin`
-2. Add authentication middleware (restrict to admin users)
-3. Use a separate domain: `admin.your-domain.com`
+1. Keep root directory at repository root (`.`)
+2. Build command: `pnpm --filter @living-library/admin build`
+3. Add authentication middleware (restrict to admin users)
+4. Use a separate domain: `admin.your-domain.com`
 
 ## Vercel Configuration (vercel.json)
 
