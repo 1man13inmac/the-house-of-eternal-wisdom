@@ -1,0 +1,1027 @@
+// ============================================================
+// THE LIVING LIBRARY — Production Prisma Schema
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Enums ─────────────────────────────────────────────────────
+
+enum UserRole {
+  USER
+  MEMBER
+  SCHOLAR
+  CURATOR
+  MODERATOR
+  ADMIN
+}
+
+enum MembershipTier {
+  FREE
+  MEMBER
+  SCHOLAR
+  PREMIUM
+}
+
+enum SourceType {
+  PRIMARY_SOURCE
+  CLASSICAL_COMMENTARY
+  MODERN_SCHOLARSHIP
+  COMPARATIVE_ANALYSIS
+  SPECULATIVE
+  COMMUNITY_COMMENTARY
+}
+
+enum TextDifficulty {
+  SEED
+  FOUNDATION
+  STRUCTURAL
+  ESOTERIC
+  SCHOLARLY
+  SPECIALIST
+}
+
+enum KnowledgeConfidence {
+  HISTORICAL_CONSENSUS
+  SCHOLARLY_DEBATED
+  TRADITIONAL_INTERPRETATION
+  SPECULATIVE
+  MYTHOLOGICAL_SYMBOLIC
+}
+
+enum ReadingState {
+  UNREAD
+  READING
+  COMPLETED
+  REVISITING
+  STUDYING_DEEPLY
+  ARCHIVED
+  ABANDONED
+}
+
+enum JournalEntryVisibility {
+  PRIVATE
+  MEMBERS_ONLY
+  PUBLIC
+}
+
+enum TimelineLayer {
+  POLITICAL
+  PHILOSOPHICAL
+  SCIENTIFIC
+  RELIGIOUS
+  LITERARY
+  ARCHITECTURAL
+  LINGUISTIC
+}
+
+enum AnnotationType {
+  HIGHLIGHT
+  NOTE
+  CROSS_REFERENCE
+}
+
+enum MediaType {
+  IMAGE
+  AUDIO
+  VIDEO
+  DOCUMENT
+  MANUSCRIPT
+}
+
+enum CivilisationType {
+  MESOPOTAMIAN
+  EGYPTIAN
+  HEBREW
+  GREEK
+  ROMAN
+  PERSIAN
+  HINDU
+  BUDDHIST
+  TAOIST
+  CONFUCIAN
+  JAPANESE
+  NORSE
+  CELTIC
+  ISLAMIC
+  AFRICAN
+  INDIGENOUS
+  MESOAMERICAN
+  RENAISSANCE_HERMETIC
+  ENLIGHTENMENT
+  CHRISTIAN_MYSTICAL
+  OTHER
+}
+
+enum NotificationType {
+  MENTION
+  REPLY
+  RECOMMENDATION
+  SYSTEM
+  NEW_CONTENT
+}
+
+// ── User & Auth ───────────────────────────────────────────────
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  role      UserRole  @default(USER)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  profile          Profile?
+  membership       Membership?
+  journals         Journal[]
+  journalEntries   JournalEntry[]
+  readingProgress  ReadingProgress[]
+  annotations      Annotation[]
+  highlights       Highlight[]
+  bookmarks        Bookmark[]
+  collections      Collection[]
+  discussions      DiscussionThread[]
+  comments         Comment[]
+  aiConversations  AIConversation[]
+  recommendations  Recommendation[]
+  notifications    Notification[]
+  scholarProfile   ScholarProfile?
+  moderatorProfile ModeratorProfile?
+  followedBy       UserRelationship[] @relation("Following")
+  following        UserRelationship[] @relation("Follower")
+
+  @@map("users")
+}
+
+model Profile {
+  id                  String         @id @default(uuid())
+  userId              String         @unique @map("user_id")
+  username            String         @unique
+  displayName         String         @map("display_name")
+  bio                 String?
+  avatarUrl           String?        @map("avatar_url")
+  location            String?
+  website             String?
+  isScholarVerified   Boolean        @default(false) @map("is_scholar_verified")
+  isPublic            Boolean        @default(true) @map("is_public")
+  interests           String[]
+  preferredDifficulty TextDifficulty @default(FOUNDATION) @map("preferred_difficulty")
+  dailyReadingGoalMins Int           @default(30) @map("daily_reading_goal_mins")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Membership {
+  id                   String         @id @default(uuid())
+  userId               String         @unique @map("user_id")
+  tier                 MembershipTier @default(FREE)
+  stripeCustomerId     String?        @map("stripe_customer_id")
+  stripeSubscriptionId String?        @map("stripe_subscription_id")
+  currentPeriodStart   DateTime?      @map("current_period_start")
+  currentPeriodEnd     DateTime?      @map("current_period_end")
+  cancelAtPeriodEnd    Boolean        @default(false) @map("cancel_at_period_end")
+  createdAt            DateTime       @default(now()) @map("created_at")
+  updatedAt            DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("memberships")
+}
+
+model ScholarProfile {
+  id               String    @id @default(uuid())
+  userId           String    @unique @map("user_id")
+  institution      String?
+  credentials      String[]
+  specializations  String[]
+  verificationDocs String[]  @map("verification_docs")
+  verifiedAt       DateTime? @map("verified_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("scholar_profiles")
+}
+
+model ModeratorProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique @map("user_id")
+  permissions String[]
+  assignedAt  DateTime @default(now()) @map("assigned_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("moderator_profiles")
+}
+
+model UserRelationship {
+  id          String   @id @default(uuid())
+  followerId  String   @map("follower_id")
+  followingId String   @map("following_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("user_relationships")
+}
+
+// ── Civilisations & Traditions ────────────────────────────────
+
+model Civilization {
+  id               String           @id @default(uuid())
+  name             String
+  slug             String           @unique
+  type             CivilisationType
+  overview         String
+  historicalPeriod String           @map("historical_period")
+  geographicRegion String           @map("geographic_region")
+  languages        String[]
+  cosmology        String?
+  philosophy       String?
+  imageUrl         String?          @map("image_url")
+  mapUrl           String?          @map("map_url")
+  isPublished      Boolean          @default(false) @map("is_published")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  deletedAt        DateTime?        @map("deleted_at")
+
+  books          Book[]
+  authors        Author[]
+  traditions     Tradition[]
+  figures        HistoricalFigure[]
+  symbols        Symbol[]
+  timelineEvents TimelineEvent[]
+  sacredSites    SacredSite[]
+  glossaryTerms  GlossaryTerm[]
+  concepts       Concept[]
+
+  @@index([slug])
+  @@map("civilizations")
+}
+
+model Tradition {
+  id             String   @id @default(uuid())
+  name           String
+  slug           String   @unique
+  description    String
+  civilizationId String?  @map("civilization_id")
+  parentId       String?  @map("parent_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+  parent       Tradition?    @relation("TraditionHierarchy", fields: [parentId], references: [id])
+  children     Tradition[]   @relation("TraditionHierarchy")
+
+  @@index([slug])
+  @@map("traditions")
+}
+
+model PhilosophySchool {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String
+  foundedPeriod String?  @map("founded_period")
+  region        String?
+  keyPrinciples String[]
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("philosophy_schools")
+}
+
+// ── Books & Texts ─────────────────────────────────────────────
+
+model Book {
+  id               String         @id @default(uuid())
+  title            String
+  originalTitle    String?        @map("original_title")
+  slug             String         @unique
+  authorId         String?        @map("author_id")
+  civilizationId   String?        @map("civilization_id")
+  language         String
+  estimatedDate    String?        @map("estimated_date")
+  estimatedDateNum Int?           @map("estimated_date_num")
+  historicalContext String        @map("historical_context")
+  summary          String
+  difficulty       TextDifficulty
+  sourceType       SourceType     @map("source_type")
+  coverImageUrl    String?        @map("cover_image_url")
+  pageCount        Int?           @map("page_count")
+  isPublicDomain   Boolean        @default(false) @map("is_public_domain")
+  gutenbergId      String?        @map("gutenberg_id")
+  openLibraryId    String?        @map("open_library_id")
+  isPublished      Boolean        @default(false) @map("is_published")
+  isFeatured       Boolean        @default(false) @map("is_featured")
+  viewCount        Int            @default(0) @map("view_count")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+
+  author          Author?           @relation(fields: [authorId], references: [id])
+  civilization    Civilization?     @relation(fields: [civilizationId], references: [id])
+  editions        TextEdition[]
+  affiliateLinks  AffiliateLink[]
+  translations    Translation[]
+  readingProgress ReadingProgress[]
+  annotations     Annotation[]
+  highlights      Highlight[]
+  bookmarks       Bookmark[]
+  citations       Citation[]
+  timelineEvents  TimelineEvent[]   @relation("BookTimelineEvents")
+
+  @@index([slug])
+  @@index([civilizationId])
+  @@index([authorId])
+  @@index([difficulty])
+  @@map("books")
+}
+
+model TextEdition {
+  id            String   @id @default(uuid())
+  bookId        String   @map("book_id")
+  title         String
+  publisherId   String?  @map("publisher_id")
+  year          Int?
+  isbn          String?
+  language      String
+  translator    String?
+  notes         String?
+  isRecommended Boolean  @default(false) @map("is_recommended")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  book      Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  publisher Publisher? @relation(fields: [publisherId], references: [id])
+
+  @@map("text_editions")
+}
+
+model Author {
+  id             String   @id @default(uuid())
+  name           String
+  originalName   String?  @map("original_name")
+  slug           String   @unique
+  born           String?
+  died           String?
+  civilizationId String?  @map("civilization_id")
+  biography      String
+  significance   String
+  imageUrl       String?  @map("image_url")
+  isPublished    Boolean  @default(false) @map("is_published")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+  books        Book[]
+
+  @@index([slug])
+  @@map("authors")
+}
+
+model AffiliateLink {
+  id        String   @id @default(uuid())
+  bookId    String   @map("book_id")
+  platform  String
+  url       String
+  label     String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("affiliate_links")
+}
+
+model Translation {
+  id          String   @id @default(uuid())
+  bookId      String   @map("book_id")
+  language    String
+  translator  String
+  year        Int?
+  publisher   String?
+  notes       String?
+  isPreferred Boolean  @default(false) @map("is_preferred")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("translations")
+}
+
+model Publisher {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  website     String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  editions TextEdition[]
+
+  @@map("publishers")
+}
+
+// ── Historical Figures ────────────────────────────────────────
+
+model HistoricalFigure {
+  id             String   @id @default(uuid())
+  name           String
+  originalName   String?  @map("original_name")
+  slug           String   @unique
+  born           String?
+  died           String?
+  civilizationId String?  @map("civilization_id")
+  biography      String
+  significance   String
+  imageUrl       String?  @map("image_url")
+  isPublished    Boolean  @default(false) @map("is_published")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+
+  @@index([slug])
+  @@map("historical_figures")
+}
+
+// ── Concepts & Knowledge Graph ────────────────────────────────
+
+model Topic {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  parentId    String?  @map("parent_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  parent   Topic?  @relation("TopicHierarchy", fields: [parentId], references: [id])
+  children Topic[] @relation("TopicHierarchy")
+
+  @@index([slug])
+  @@map("topics")
+}
+
+model Concept {
+  id              String              @id @default(uuid())
+  name            String
+  slug            String              @unique
+  definition      String
+  extendedDesc    String?             @map("extended_description")
+  civilizationId  String?             @map("civilization_id")
+  parentConceptId String?             @map("parent_concept_id")
+  confidence      KnowledgeConfidence
+  tags            String[]
+  isPublished     Boolean             @default(false) @map("is_published")
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+  parent       Concept?      @relation("ConceptHierarchy", fields: [parentConceptId], references: [id])
+  children     Concept[]     @relation("ConceptHierarchy")
+
+  @@index([slug])
+  @@map("concepts")
+}
+
+model Symbol {
+  id             String   @id @default(uuid())
+  name           String
+  slug           String   @unique
+  description    String
+  civilizationId String?  @map("civilization_id")
+  meaning        String
+  imageUrl       String?  @map("image_url")
+  isPublished    Boolean  @default(false) @map("is_published")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+
+  @@index([slug])
+  @@map("symbols")
+}
+
+model Practice {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  type        String
+  isPublished Boolean  @default(false) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("practices")
+}
+
+model GlossaryTerm {
+  id             String   @id @default(uuid())
+  term           String
+  slug           String   @unique
+  definition     String
+  etymology      String?
+  language       String?
+  civilizationId String?  @map("civilization_id")
+  isPublished    Boolean  @default(false) @map("is_published")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+
+  @@index([slug])
+  @@index([term])
+  @@map("glossary_terms")
+}
+
+// ── Timeline ──────────────────────────────────────────────────
+
+model TimelineEvent {
+  id             String              @id @default(uuid())
+  title          String
+  description    String
+  date           String
+  dateNumeric    Int?                @map("date_numeric")
+  layer          TimelineLayer
+  civilizationId String?             @map("civilization_id")
+  isApproximate  Boolean             @default(false) @map("is_approximate")
+  sourceType     SourceType          @map("source_type")
+  confidence     KnowledgeConfidence
+  isPublished    Boolean             @default(false) @map("is_published")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+  books        Book[]        @relation("BookTimelineEvents")
+
+  @@index([dateNumeric])
+  @@index([layer])
+  @@map("timeline_events")
+}
+
+// ── Learning Paths ────────────────────────────────────────────
+
+model LearningPath {
+  id             String         @id @default(uuid())
+  title          String
+  slug           String         @unique
+  description    String
+  difficulty     TextDifficulty
+  estimatedHours Int            @default(0) @map("estimated_hours")
+  coverImageUrl  String?        @map("cover_image_url")
+  isPublished    Boolean        @default(false) @map("is_published")
+  isFeatured     Boolean        @default(false) @map("is_featured")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  steps   LearningPathStep[]
+  courses Course[]
+
+  @@index([slug])
+  @@map("learning_paths")
+}
+
+model LearningPathStep {
+  id             String   @id @default(uuid())
+  learningPathId String   @map("learning_path_id")
+  order          Int
+  title          String
+  description    String
+  bookId         String?  @map("book_id")
+  conceptId      String?  @map("concept_id")
+  estimatedHours Int      @default(1) @map("estimated_hours")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  learningPath LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+
+  @@map("learning_path_steps")
+}
+
+model Course {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  description    String
+  learningPathId String?  @map("learning_path_id")
+  isPublished    Boolean  @default(false) @map("is_published")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  learningPath LearningPath? @relation(fields: [learningPathId], references: [id])
+
+  @@map("courses")
+}
+
+// ── Reading & Progress ────────────────────────────────────────
+
+model ReadingProgress {
+  id          String       @id @default(uuid())
+  userId      String       @map("user_id")
+  bookId      String       @map("book_id")
+  state       ReadingState @default(UNREAD)
+  progress    Float        @default(0)
+  lastReadAt  DateTime?    @map("last_read_at")
+  completedAt DateTime?    @map("completed_at")
+  startedAt   DateTime?    @map("started_at")
+  notes       String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bookId])
+  @@map("reading_progress")
+}
+
+// ── Annotations & Highlights ──────────────────────────────────
+
+model Annotation {
+  id             String         @id @default(uuid())
+  userId         String         @map("user_id")
+  bookId         String         @map("book_id")
+  type           AnnotationType
+  text           String
+  startPosition  String         @map("start_position")
+  endPosition    String         @map("end_position")
+  note           String?
+  crossRefBookId String?        @map("cross_ref_book_id")
+  crossRefPos    String?        @map("cross_ref_position")
+  isPublic       Boolean        @default(false) @map("is_public")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([userId, bookId])
+  @@map("annotations")
+}
+
+model Highlight {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  bookId    String   @map("book_id")
+  text      String
+  position  String
+  color     String   @default("#ffd700")
+  note      String?
+  isPublic  Boolean  @default(false) @map("is_public")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("highlights")
+}
+
+// ── Journal ───────────────────────────────────────────────────
+
+model Journal {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  title       String
+  description String?
+  isDefault   Boolean  @default(false) @map("is_default")
+  isPublic    Boolean  @default(false) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries JournalEntry[]
+
+  @@map("journals")
+}
+
+model JournalEntry {
+  id         String                 @id @default(uuid())
+  journalId  String                 @map("journal_id")
+  userId     String                 @map("user_id")
+  title      String
+  content    String
+  visibility JournalEntryVisibility @default(PRIVATE)
+  tags       String[]
+  createdAt  DateTime               @default(now()) @map("created_at")
+  updatedAt  DateTime               @updatedAt @map("updated_at")
+  deletedAt  DateTime?              @map("deleted_at")
+
+  journal Journal @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("journal_entries")
+}
+
+// ── Community ─────────────────────────────────────────────────
+
+model Article {
+  id            String    @id @default(uuid())
+  title         String
+  slug          String    @unique
+  content       String
+  excerpt       String?
+  authorId      String    @map("author_id")
+  coverImageUrl String?   @map("cover_image_url")
+  tags          String[]
+  isPublished   Boolean   @default(false) @map("is_published")
+  isFeatured    Boolean   @default(false) @map("is_featured")
+  publishedAt   DateTime? @map("published_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  comments Comment[]
+
+  @@index([slug])
+  @@map("articles")
+}
+
+model DiscussionThread {
+  id             String    @id @default(uuid())
+  title          String
+  content        String
+  authorId       String    @map("author_id")
+  bookId         String?   @map("book_id")
+  conceptId      String?   @map("concept_id")
+  civilizationId String?   @map("civilization_id")
+  tags           String[]
+  isPinned       Boolean   @default(false) @map("is_pinned")
+  isLocked       Boolean   @default(false) @map("is_locked")
+  viewCount      Int       @default(0) @map("view_count")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+
+  @@index([authorId])
+  @@map("discussion_threads")
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  content     String
+  authorId    String    @map("author_id")
+  threadId    String?   @map("thread_id")
+  articleId   String?   @map("article_id")
+  parentId    String?   @map("parent_id")
+  isModerated Boolean   @default(false) @map("is_moderated")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  author  User              @relation(fields: [authorId], references: [id])
+  thread  DiscussionThread? @relation(fields: [threadId], references: [id])
+  article Article?          @relation(fields: [articleId], references: [id])
+  parent  Comment?          @relation("CommentReplies", fields: [parentId], references: [id])
+  replies Comment[]         @relation("CommentReplies")
+
+  @@map("comments")
+}
+
+model CommunityGroup {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  isPublic    Boolean  @default(true) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("community_groups")
+}
+
+// ── AI ────────────────────────────────────────────────────────
+
+model AIConversation {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AIMessage[]
+
+  @@map("ai_conversations")
+}
+
+model AIMessage {
+  id             String               @id @default(uuid())
+  conversationId String               @map("conversation_id")
+  role           String
+  content        String
+  citations      String[]
+  confidence     KnowledgeConfidence? @map("confidence")
+  createdAt      DateTime             @default(now()) @map("created_at")
+
+  conversation AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_messages")
+}
+
+model Recommendation {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  type        String
+  itemId      String   @map("item_id")
+  reason      String
+  score       Float
+  isViewed    Boolean  @default(false) @map("is_viewed")
+  isDismissed Boolean  @default(false) @map("is_dismissed")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recommendations")
+}
+
+// ── Media ─────────────────────────────────────────────────────
+
+model MediaResource {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  type         MediaType
+  url          String
+  thumbnailUrl String?   @map("thumbnail_url")
+  duration     Int?
+  isPublished  Boolean   @default(false) @map("is_published")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("media_resources")
+}
+
+model VideoResource {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  url          String
+  thumbnailUrl String?  @map("thumbnail_url")
+  duration     Int?
+  source       String
+  isPublished  Boolean  @default(false) @map("is_published")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("video_resources")
+}
+
+model AudioResource {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  url          String
+  thumbnailUrl String?  @map("thumbnail_url")
+  duration     Int?
+  type         String
+  isPublished  Boolean  @default(false) @map("is_published")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("audio_resources")
+}
+
+// ── Citations & References ────────────────────────────────────
+
+model Citation {
+  id          String   @id @default(uuid())
+  bookId      String?  @map("book_id")
+  sourceTitle String   @map("source_title")
+  author      String?
+  year        Int?
+  publisher   String?
+  url         String?
+  page        String?
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  book Book? @relation(fields: [bookId], references: [id])
+
+  @@map("citations")
+}
+
+// ── Maps & Sacred Sites ───────────────────────────────────────
+
+model SacredSite {
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  description      String
+  type             String
+  latitude         Float
+  longitude        Float
+  civilizationId   String?  @map("civilization_id")
+  historicalPeriod String?  @map("historical_period")
+  imageUrl         String?  @map("image_url")
+  isPublished      Boolean  @default(false) @map("is_published")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  civilization Civilization? @relation(fields: [civilizationId], references: [id])
+
+  @@map("sacred_sites")
+}
+
+model MapLocation {
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  type             String
+  latitude         Float
+  longitude        Float
+  description      String
+  civilizationId   String?  @map("civilization_id")
+  historicalPeriod String?  @map("historical_period")
+  isActive         Boolean  @default(true) @map("is_active")
+  imageUrl         String?  @map("image_url")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("map_locations")
+}
+
+// ── Tags, Bookmarks, Collections ─────────────────────────────
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  color     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("tags")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  bookId    String   @map("book_id")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, bookId])
+  @@map("bookmarks")
+}
+
+model Collection {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  title       String
+  description String?
+  isPublic    Boolean  @default(false) @map("is_public")
+  bookIds     String[] @map("book_ids")
+  conceptIds  String[] @map("concept_ids")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("collections")
+}
+
+// ── Notifications ─────────────────────────────────────────────
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  actionUrl String?          @map("action_url")
+  isRead    Boolean          @default(false) @map("is_read")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
