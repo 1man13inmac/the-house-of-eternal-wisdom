@@ -128,8 +128,8 @@ export default function HomePage() {
 
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              'Egyptian', 'Greek', 'Hindu', 'Buddhist', 'Taoist', 'Islamic',
-              'Norse', 'Celtic', 'Hebrew', 'Mesopotamian', 'Persian', 'Roman',
+              'Sumerian', 'Babylonian', 'Egyptian', 'Greek', 'Hindu', 'Buddhist', 'Taoist', 'Islamic',
+              'Norse', 'Celtic', 'Hebrew', 'Mesopotamian', 'Persian', 'Roman', 'Mayan',
               'Hermetic', 'Neoplatonic', 'Confucian', 'Tibetan', 'Sufi', 'Stoic',
             ].map((tradition) => (
               <Link

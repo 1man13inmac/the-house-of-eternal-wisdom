@@ -1,87 +1,5 @@
 import Link from 'next/link'
-
-const LEARNING_PATHS = [
-  {
-    id: '1',
-    title: 'Introduction to Taoism',
-    difficulty: 'SEED',
-    estimatedHours: 20,
-    description: 'Begin with the Tao Te Ching and journey through the major Taoist texts, philosophy, and contemplative practices.',
-    tradition: 'Taoist',
-    steps: 8,
-    slug: 'introduction-to-taoism',
-  },
-  {
-    id: '2',
-    title: 'Foundations of Greek Philosophy',
-    difficulty: 'FOUNDATION',
-    estimatedHours: 40,
-    description: 'From the Presocratics through Plato, Aristotle, and the Stoics — the foundations of Western thought.',
-    tradition: 'Greek',
-    steps: 12,
-    slug: 'foundations-of-greek-philosophy',
-  },
-  {
-    id: '3',
-    title: 'The Egyptian Mysteries',
-    difficulty: 'STRUCTURAL',
-    estimatedHours: 35,
-    description: 'Explore the cosmology, mythology, and esoteric systems of ancient Egypt from the Pyramid Texts to Hermetic philosophy.',
-    tradition: 'Egyptian',
-    steps: 10,
-    slug: 'the-egyptian-mysteries',
-  },
-  {
-    id: '4',
-    title: 'Sacred Geometry Foundations',
-    difficulty: 'STRUCTURAL',
-    estimatedHours: 25,
-    description: 'The mathematical and geometric principles underlying sacred architecture, art, and cosmology across traditions.',
-    tradition: 'Cross-Traditional',
-    steps: 9,
-    slug: 'sacred-geometry-foundations',
-  },
-  {
-    id: '5',
-    title: 'Comparative Cosmology',
-    difficulty: 'STRUCTURAL',
-    estimatedHours: 30,
-    description: 'How different civilisations understood the origin, structure, and purpose of the cosmos.',
-    tradition: 'Cross-Traditional',
-    steps: 10,
-    slug: 'comparative-cosmology',
-  },
-  {
-    id: '6',
-    title: 'The Hero\'s Journey Across Civilisations',
-    difficulty: 'FOUNDATION',
-    estimatedHours: 20,
-    description: "The universal initiatory narrative from Homer's Odyssey to the Mahabharata and beyond.",
-    tradition: 'Comparative',
-    steps: 8,
-    slug: 'heros-journey',
-  },
-  {
-    id: '7',
-    title: 'Alchemy & Inner Transformation',
-    difficulty: 'ESOTERIC',
-    estimatedHours: 45,
-    description: 'The history and symbolism of alchemical transformation across Egyptian, Islamic, and European traditions.',
-    tradition: 'Hermetic',
-    steps: 14,
-    slug: 'alchemy-inner-transformation',
-  },
-  {
-    id: '8',
-    title: 'Death & Afterlife Traditions',
-    difficulty: 'FOUNDATION',
-    estimatedHours: 25,
-    description: "How humanity's great traditions understood death, the soul's journey, and what lies beyond.",
-    tradition: 'Comparative',
-    steps: 9,
-    slug: 'death-and-afterlife',
-  },
-]
+import { DIFFICULTY_LABELS, LEARNING_PATHS } from '../content'
 
 const DIFFICULTY_COLORS = {
   SEED: 'text-green-700 border-green-200 bg-green-50',
@@ -90,15 +8,6 @@ const DIFFICULTY_COLORS = {
   ESOTERIC: 'text-purple-700 border-purple-200 bg-purple-50',
   SCHOLARLY: 'text-red-700 border-red-200 bg-red-50',
   SPECIALIST: 'text-gray-700 border-gray-200 bg-gray-50',
-}
-
-const DIFFICULTY_LABELS = {
-  SEED: 'Introductory',
-  FOUNDATION: 'Foundation',
-  STRUCTURAL: 'Intermediate',
-  ESOTERIC: 'Advanced',
-  SCHOLARLY: 'Scholarly',
-  SPECIALIST: 'Specialist',
 }
 
 export default function LearningPathsPage() {
@@ -131,7 +40,7 @@ export default function LearningPathsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {LEARNING_PATHS.map((path) => (
             <Link
-              key={path.id}
+              key={path.slug}
               href={`/learning-paths/${path.slug}`}
               className="group block border border-border bg-card hover:border-primary/50 hover:shadow-sm transition-all duration-300 p-8"
             >
@@ -140,7 +49,7 @@ export default function LearningPathsPage() {
                   {path.tradition}
                 </span>
                 <span className={`text-xs border px-2 py-1 font-sans ${DIFFICULTY_COLORS[path.difficulty as keyof typeof DIFFICULTY_COLORS]}`}>
-                  {DIFFICULTY_LABELS[path.difficulty as keyof typeof DIFFICULTY_LABELS]}
+                  {DIFFICULTY_LABELS[path.difficulty]}
                 </span>
               </div>
               

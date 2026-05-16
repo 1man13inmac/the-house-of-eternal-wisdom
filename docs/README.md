@@ -12,6 +12,7 @@
 | `/database` | Prisma schema reference, ER diagrams, data models |
 | `/api` | API reference for all endpoints |
 | `/content-policy` | Canon Standard, classification policies, editorial guidelines |
+| `/content` | Website content map, route coverage, and editorial implementation notes |
 | `/deployment` | Vercel, Docker, VPS, Supabase deployment guides |
 | `/governance` | Content governance, curator roles, moderation policies |
 | `/ai-systems` | AI assistant design, confidence system, prompt engineering |
@@ -54,5 +55,8 @@ pnpm --filter @living-library/admin dev
 5. **Slow Internet philosophy** — Contemplative UX, no dopamine mechanics
 
 ---
+
+Additional docs:
+- Website content map: `docs/content/website-content-map.md`
 
 *For the complete vision, see `/docs/architecture/vision.md`*

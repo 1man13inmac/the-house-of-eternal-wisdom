@@ -1,19 +1,5 @@
 import Link from 'next/link'
-
-const SAMPLE_TERMS = [
-  { term: 'Tao', language: 'Chinese', definition: 'The Way; the underlying principle of reality in Taoist philosophy.', slug: 'tao' },
-  { term: 'Logos', language: 'Greek', definition: 'Reason, word, discourse; the rational principle governing the cosmos in Greek philosophy.', slug: 'logos' },
-  { term: 'Dharma', language: 'Sanskrit', definition: 'Cosmic order, duty, and righteousness; the fundamental principles of reality in Hindu and Buddhist thought.', slug: 'dharma' },
-  { term: 'Ma\'at', language: 'Egyptian', definition: 'Truth, justice, balance, and cosmic order; the foundational principle of Egyptian cosmology.', slug: 'maat' },
-  { term: 'Ṛta', language: 'Sanskrit', definition: 'Cosmic order and truth in Vedic religion; the natural law underlying all reality.', slug: 'rta' },
-  { term: 'Pneuma', language: 'Greek', definition: 'Breath, spirit; the vital force animating all living beings in Stoic philosophy.', slug: 'pneuma' },
-  { term: 'Atman', language: 'Sanskrit', definition: 'The individual self or soul, identical with Brahman (universal consciousness) in Advaita Vedanta.', slug: 'atman' },
-  { term: 'Samsara', language: 'Sanskrit', definition: 'The cycle of birth, death, and rebirth; the wheel of conditioned existence in Hindu and Buddhist thought.', slug: 'samsara' },
-  { term: 'Noesis', language: 'Greek', definition: 'Pure intellectual intuition; direct apprehension of intelligible forms in Neoplatonic philosophy.', slug: 'noesis' },
-  { term: 'Sunyata', language: 'Sanskrit', definition: 'Emptiness; the absence of inherent existence in all phenomena in Buddhist philosophy.', slug: 'sunyata' },
-  { term: 'Heka', language: 'Egyptian', definition: 'Magic; the divine power underlying creation and transformation in Egyptian cosmology.', slug: 'heka' },
-  { term: 'Pleroma', language: 'Greek', definition: 'The Fullness; the totality of divine powers in Gnostic cosmology.', slug: 'pleroma' },
-]
+import { GLOSSARY_TERMS } from '../content'
 
 export default function GlossaryPage() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -63,7 +49,7 @@ export default function GlossaryPage() {
 
         {/* Terms grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {SAMPLE_TERMS.map((item) => (
+          {GLOSSARY_TERMS.map((item) => (
             <Link
               key={item.slug}
               href={`/glossary/${item.slug}`}
