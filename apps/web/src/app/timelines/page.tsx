@@ -13,7 +13,7 @@ const TIMELINE_EVENTS = [
   { date: '~400 BCE', event: 'Plato writes The Republic and the dialogues', layer: 'PHILOSOPHICAL', civ: 'Greek' },
   { date: '~336 BCE', event: 'Aristotle founds the Lyceum', layer: 'PHILOSOPHICAL', civ: 'Greek' },
   { date: '~300 BCE', event: 'Euclid writes Elements — foundations of geometry', layer: 'SCIENTIFIC', civ: 'Greek' },
-  { date: '~250 BCE', event: 'Ashoka\'s Edicts — Buddhist ethics in governance', layer: 'POLITICAL', civ: 'Buddhist' },
+  { date: '~250 BCE', event: "Ashoka's Edicts — Buddhist ethics in governance", layer: 'POLITICAL', civ: 'Buddhist' },
   { date: '~46 BCE', event: 'Julius Caesar\'s calendar reform', layer: 'SCIENTIFIC', civ: 'Roman' },
   { date: '~50 CE', event: 'Paul\'s letters — earliest Christian writings', layer: 'RELIGIOUS', civ: 'Christian' },
   { date: '~200 CE', event: 'Plotinus founds Neoplatonism', layer: 'PHILOSOPHICAL', civ: 'Greek' },

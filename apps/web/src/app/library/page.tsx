@@ -28,7 +28,7 @@ const SAMPLE_BOOKS = [
     civilization: 'Greek',
     difficulty: 'FOUNDATION',
     estimatedDate: '~375 BCE',
-    summary: 'Plato\'s masterwork exploring justice, the ideal state, and the nature of knowledge.',
+    summary: "Plato's masterwork exploring justice, the ideal state, and the nature of knowledge.",
     isPublicDomain: true,
     slug: 'the-republic',
   },
