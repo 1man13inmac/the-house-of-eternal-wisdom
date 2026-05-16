@@ -358,7 +358,7 @@ model TextEdition {
   id            String   @id @default(uuid())
   bookId        String   @map("book_id")
   title         String
-  publisher     String?
+  publisherId   String?  @map("publisher_id")
   year          Int?
   isbn          String?
   language      String
@@ -369,7 +369,7 @@ model TextEdition {
   updatedAt     DateTime @updatedAt @map("updated_at")
 
   book      Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  publisher Publisher? @relation(fields: [publisher], references: [name])
+  publisher Publisher? @relation(fields: [publisherId], references: [id])
 
   @@map("text_editions")
 }
