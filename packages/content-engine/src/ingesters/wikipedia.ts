@@ -46,7 +46,7 @@ export class WikipediaIngester {
     return data.query.search.map((r) => ({
       pageId: r.pageid,
       title: r.title,
-      snippet: r.snippet.replace(/<[^>]*>/g, ''), // Strip HTML
+      snippet: r.snippet.replace(/<[^>]*>|<script[\s\S]*?<\/script>/gi, ''), // Strip HTML and scripts
     }))
   }
 }
