@@ -1,0 +1,14 @@
+{
+  "name": "@living-library/content-engine",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@living-library/types": "workspace:*",
+    "typescript": "^5.0.0"
+  }
+}
