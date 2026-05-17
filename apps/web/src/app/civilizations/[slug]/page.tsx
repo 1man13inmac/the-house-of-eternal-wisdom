@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BOOKS, CIVILIZATIONS, getAmazonLink } from '../../content'
 import { createPageMetadata } from '../../seo'
-import CivilizationCanonicalTemplate from '../_components/CivilizationCanonicalTemplate'
+import CivilizationCanonicalTemplate from '../../_components/CivilizationCanonicalTemplate'
 
 type Props = {
   params: {
