@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Civilizational Timelines',
+  path: '/timelines',
+  description:
+    'Study layered civilizational timelines across political, philosophical, scientific, religious, and literary history.',
+  keywords: [
+    'civilizational timeline',
+    'history of philosophy timeline',
+    'comparative history',
+    'religious history chronology',
+    'history of science timeline',
+    'interconnected historical events',
+  ],
+})
 
 const TIMELINE_EVENTS = [
   { date: '~3100 BCE', event: 'Unification of Egypt; beginning of pharaonic tradition', layer: 'POLITICAL', civ: 'Egyptian' },
@@ -50,8 +67,12 @@ export default function TimelinesPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-light mb-4">Civilisational Timelines</h1>
           <p className="text-muted-foreground font-sans max-w-2xl">
-            Multi-layered timelines across civilisations — political, philosophical, scientific, 
+            Multi-layered timelines across civilisations — political, philosophical, scientific,
             religious, literary, architectural, and linguistic events overlaid and interconnected.
+          </p>
+          <p className="text-sm text-muted-foreground font-sans max-w-3xl mt-4 leading-relaxed">
+            Use this chronology to trace conceptual transmission, historical overlap, and major turning points
+            in global intellectual history, including key texts, schools, and shifts in worldview.
           </p>
         </div>
 

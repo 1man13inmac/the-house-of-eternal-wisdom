@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BOOKS, CIVILIZATION_SLUG_ALIASES, DIFFICULTY_LABELS, getAmazonLink } from '../../content'
+import { createPageMetadata } from '../../seo'
 
 type Props = {
   params: {
@@ -19,10 +20,19 @@ export function generateMetadata({ params }: Props): Metadata {
     return { title: 'Book Not Found' }
   }
 
-  return {
+  return createPageMetadata({
     title: `${book.title} | Library Overview`,
+    path: `/library/${book.slug}`,
     description: `${book.summary} Explore themes, context, and recommended next reading paths.`,
-  }
+    keywords: [
+      book.title,
+      book.author,
+      `${book.civilization} text`,
+      'primary source overview',
+      'canonical text summary',
+      ...book.themes,
+    ],
+  })
 }
 
 export default function LibraryDetailPage({ params }: Props) {

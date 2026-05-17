@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Editorial Articles',
+  path: '/articles',
+  description:
+    'Read editorial essays on canon standards, comparative philosophy methods, textual interpretation, and civilizational literacy.',
+  keywords: [
+    'digital humanities articles',
+    'comparative philosophy essays',
+    'canon standards',
+    'how to read primary sources',
+    'civilizational literacy',
+    'scholarly commentary',
+  ],
+})
 
 const ARTICLES = [
   {
@@ -31,6 +48,11 @@ export default function ArticlesPage() {
         <p className="text-muted-foreground font-sans leading-relaxed mb-10">
           Editorial essays on method, interpretation, and civilizational literacy.
         </p>
+        <div className="border border-border bg-card p-5 mb-8 text-sm text-muted-foreground font-sans leading-relaxed">
+          The article archive is optimized for readers searching for source-critical methods, disciplined
+          comparative analysis, and practical study systems for ancient texts, religious traditions,
+          philosophy, symbolism, and history of ideas.
+        </div>
         <div className="grid grid-cols-1 gap-6">
           {ARTICLES.map((article) => (
             <article key={article.slug} className="border border-border bg-card p-6">

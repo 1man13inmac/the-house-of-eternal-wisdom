@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BOOKS, GLOSSARY_TERMS } from '../../content'
+import { createPageMetadata } from '../../seo'
 
 type Props = {
   params: {
@@ -19,10 +20,18 @@ export function generateMetadata({ params }: Props): Metadata {
     return { title: 'Glossary Entry Not Found' }
   }
 
-  return {
+  return createPageMetadata({
     title: `${term.term} Definition and Context`,
+    path: `/glossary/${term.slug}`,
     description: `${term.definition} Includes contextual notes, related terms, and recommended reading.`,
-  }
+    keywords: [
+      term.term,
+      `${term.language} term`,
+      'concept definition',
+      'comparative glossary',
+      'philosophy terminology',
+    ],
+  })
 }
 
 export default function GlossaryDetailPage({ params }: Props) {

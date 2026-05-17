@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { SiteFooter } from './_components/site-footer'
+import { SiteHeader } from './_components/site-header'
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +62,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="min-h-screen bg-background antialiased">
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader />
+          <main className="page-content flex-1">{children}</main>
+          <SiteFooter />
+        </div>
       </body>
     </html>
   )

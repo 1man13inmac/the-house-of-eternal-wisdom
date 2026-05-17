@@ -1,5 +1,22 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { GLOSSARY_TERMS } from '../content'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Glossary of Civilizational Terms',
+  path: '/glossary',
+  description:
+    'Search a cross-tradition glossary of philosophy, religion, symbolism, and metaphysical terms with context and related reading.',
+  keywords: [
+    'philosophy glossary',
+    'religious terms glossary',
+    'civilizational concepts',
+    'symbolism definitions',
+    'comparative terminology',
+    'metaphysics glossary',
+  ],
+})
 
 export default function GlossaryPage() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -20,8 +37,12 @@ export default function GlossaryPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-light mb-4">Glossary</h1>
           <p className="text-muted-foreground font-sans max-w-2xl">
-            1000+ terms across civilisations and traditions, with etymologies, definitions, 
+            1000+ terms across civilisations and traditions, with etymologies, definitions,
             and cross-tradition conceptual connections.
+          </p>
+          <p className="text-sm text-muted-foreground font-sans max-w-3xl mt-4 leading-relaxed">
+            Use the glossary to build conceptual clarity for comparative philosophy, textual interpretation,
+            symbolic analysis, and historical understanding across major knowledge traditions.
           </p>
         </div>
 

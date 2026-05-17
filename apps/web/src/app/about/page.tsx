@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'About The Living Library',
+  path: '/about',
+  description:
+    'Learn the mission, canon standards, editorial governance, and scholarly methodology behind The Living Library civilizational wisdom archive.',
+  keywords: [
+    'living library mission',
+    'digital humanities project',
+    'civilizational wisdom archive',
+    'canon policy',
+    'source-first scholarship',
+    'comparative philosophy platform',
+  ],
+})
 
 export default function AboutPage() {
   return (
@@ -112,6 +129,20 @@ export default function AboutPage() {
                 </li>
               ))}
             </ul>
+
+            <h2 className="text-2xl font-serif text-foreground font-light mt-12">Why This Archive Matters in 2026</h2>
+            <p>
+              The modern internet is saturated with decontextualized quotes, fabricated citations, and
+              algorithmic noise. The Living Library exists to provide a reliable, searchable, source-aware
+              knowledge infrastructure for philosophy, religion, symbolism, history of science, and
+              contemplative traditions.
+            </p>
+
+            <p>
+              Our architecture supports long-term preservation, transparent provenance, and progressive study
+              pathways so readers can move from beginner introductions to specialist scholarship without
+              losing textual lineage or historical nuance.
+            </p>
           </div>
         </div>
       </div>

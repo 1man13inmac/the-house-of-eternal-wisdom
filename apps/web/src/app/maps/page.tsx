@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Sacred Maps and Civilizational Geography',
+  path: '/maps',
+  description:
+    'Explore sacred maps, knowledge routes, monastery networks, and civilizational geography across ancient and classical traditions.',
+  keywords: [
+    'sacred maps',
+    'civilizational geography',
+    'knowledge routes',
+    'monastery locations',
+    'philosophy geography',
+    'digital humanities maps',
+  ],
+})
 
 const SACRED_MAPS = [
   { name: 'Ancient Egypt', focus: 'Temple networks, Nile knowledge centers, funerary landscapes' },
@@ -22,6 +39,10 @@ export default function MapsPage() {
           Sacred Maps trace civilizational memory through geography: where schools formed,
           manuscripts traveled, and symbolic systems became embodied in architecture and ritual sites.
         </p>
+        <div className="mb-8 border border-border bg-card p-5 text-sm text-muted-foreground font-sans leading-relaxed">
+          This section supports long-term interactive mapping for transmission routes, translation movements,
+          sacred sites, and centers of learning with timeline overlays and related text references.
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {SACRED_MAPS.map((map) => (

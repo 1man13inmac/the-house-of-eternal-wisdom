@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'AI Study Guide',
+  path: '/ai-guide',
+  description:
+    'Discover the AI Study Guide for source-grounded explanations, confidence labels, reading recommendations, and citation-safe comparative analysis.',
+  keywords: [
+    'AI study assistant',
+    'citation grounded AI',
+    'comparative religion AI',
+    'philosophy learning assistant',
+    'semantic study guide',
+    'AI with confidence labels',
+  ],
+})
 
 export default function AIGuidePage() {
   return (
@@ -39,6 +56,16 @@ export default function AIGuidePage() {
             <li>3. Validate citations before accepting interpretive claims.</li>
             <li>4. Save your notes in Journal for long-term study continuity.</li>
           </ol>
+        </section>
+
+        <section className="mt-8 border border-border bg-card p-6">
+          <h2 className="font-serif text-2xl mb-3">SEO and Research Benefits</h2>
+          <p className="text-sm font-sans text-muted-foreground leading-relaxed">
+            This assistant is designed for serious study workflows: glossary lookups, historical context,
+            translator comparison, and reading path recommendations. It prioritizes search-quality phrasing
+            and structured outputs that improve discoverability while preserving the difference between
+            verified history, debated scholarship, traditional interpretation, and speculation.
+          </p>
         </section>
       </main>
     </div>

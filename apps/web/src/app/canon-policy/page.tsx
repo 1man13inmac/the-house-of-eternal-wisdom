@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Canon Policy and Editorial Standards',
+  path: '/canon-policy',
+  description:
+    'Review canon policy rules for source classification, citation requirements, comparative methodology, and editorial quality control.',
+  keywords: [
+    'canon policy',
+    'editorial standards',
+    'citation policy',
+    'comparative methodology',
+    'source classification',
+    'scholarly governance',
+  ],
+})
 
 const RULES = [
   'Primary source claims must cite edition and translator when relevant.',
@@ -20,6 +37,10 @@ export default function CanonPolicyPage() {
         <h1 className="text-4xl font-serif font-light mb-4">Canon Policy</h1>
         <p className="text-muted-foreground font-sans leading-relaxed mb-8">
           The Canon Policy defines how texts are classified, cited, compared, and governed.
+        </p>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
+          This framework supports search quality, content authenticity, and intellectual trust by enforcing
+          provenance, interpretive boundaries, and transparent editorial revision workflows.
         </p>
         <section className="border border-border bg-card p-6">
           <h2 className="font-serif text-2xl mb-4">Core Rules</h2>

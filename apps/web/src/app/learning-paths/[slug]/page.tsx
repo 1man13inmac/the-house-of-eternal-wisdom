@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BOOKS, DIFFICULTY_LABELS, LEARNING_PATHS } from '../../content'
+import { createPageMetadata } from '../../seo'
 
 type Props = {
   params: {
@@ -19,10 +20,18 @@ export function generateMetadata({ params }: Props): Metadata {
     return { title: 'Learning Path Not Found' }
   }
 
-  return {
+  return createPageMetadata({
     title: `${path.title} | Guided Path`,
+    path: `/learning-paths/${path.slug}`,
     description: `${path.description} Includes outcomes, recommended reading, and related topics.`,
-  }
+    keywords: [
+      path.title,
+      `${path.tradition} learning path`,
+      'guided study plan',
+      'structured curriculum',
+      'self-paced study',
+    ],
+  })
 }
 
 export default function LearningPathDetailPage({ params }: Props) {

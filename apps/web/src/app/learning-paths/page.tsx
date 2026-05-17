@@ -1,5 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { DIFFICULTY_LABELS, LEARNING_PATHS } from '../content'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Guided Learning Paths',
+  path: '/learning-paths',
+  description:
+    'Follow structured learning paths across philosophy, mysticism, comparative religion, symbolism, and civilizational history.',
+  keywords: [
+    'guided learning paths',
+    'philosophy curriculum',
+    'comparative religion courses',
+    'self paced wisdom studies',
+    'structured reading paths',
+  ],
+})
 
 const DIFFICULTY_COLORS = {
   SEED: 'text-green-700 border-green-200 bg-green-50',
@@ -32,8 +48,12 @@ export default function LearningPathsPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-light mb-4">Learning Paths</h1>
           <p className="text-muted-foreground font-sans max-w-2xl">
-            Structured journeys through humanity's wisdom traditions. Each path provides context, 
+            Structured journeys through humanity's wisdom traditions. Each path provides context,
             reading order, prerequisites, and milestone tracking.
+          </p>
+          <p className="text-sm text-muted-foreground font-sans max-w-3xl mt-4 leading-relaxed">
+            Path design emphasizes progressive complexity, source literacy, and deep retention for modern
+            learners who want coherent long-form study rather than fragmented content consumption.
           </p>
         </div>
 

@@ -1,4 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Contact The Living Library',
+  path: '/contact',
+  description:
+    'Contact The Living Library for partnerships, scholar submissions, technical support, and editorial collaboration requests.',
+  keywords: [
+    'living library contact',
+    'scholar submissions',
+    'digital humanities partnerships',
+    'archive collaboration',
+    'editorial support',
+  ],
+})
 
 export default function ContactPage() {
   return (
@@ -18,6 +34,10 @@ export default function ContactPage() {
           <p>Scholar submissions: scholars@livinglibrary.org</p>
           <p>Partnerships: partnerships@livinglibrary.org</p>
         </div>
+        <p className="mt-6 text-sm text-muted-foreground font-sans leading-relaxed">
+          Include relevant links, publication details, and your topic area to help us route your request.
+          For research collaborations, share scope, methodology, and expected outcomes.
+        </p>
       </main>
     </div>
   )

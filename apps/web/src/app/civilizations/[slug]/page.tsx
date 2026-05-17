@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BOOKS, CIVILIZATIONS, getAmazonLink } from '../../content'
+import { createPageMetadata } from '../../seo'
 
 type Props = {
   params: {
@@ -19,10 +20,18 @@ export function generateMetadata({ params }: Props): Metadata {
     return { title: 'Civilization Not Found' }
   }
 
-  return {
+  return createPageMetadata({
     title: `${civ.name} Civilization Overview`,
+    path: `/civilizations/${civ.slug}`,
     description: `${civ.summary} Includes key teachings, canonical texts, recommended books, and similar traditions.`,
-  }
+    keywords: [
+      `${civ.name} civilization`,
+      `${civ.name} philosophy`,
+      `${civ.name} texts`,
+      'civilizational knowledge',
+      'comparative tradition study',
+    ],
+  })
 }
 
 export default function CivilizationDetailPage({ params }: Props) {

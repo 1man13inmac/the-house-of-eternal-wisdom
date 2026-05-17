@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from './seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'The Living Library',
+  path: '/',
+  description:
+    'The Living Library is a civilizational wisdom archive for primary texts, learning paths, AI study guidance, and community scholarship.',
+  keywords: [
+    'living library',
+    'civilizational wisdom archive',
+    'primary source library',
+    'comparative philosophy platform',
+    'digital humanities knowledge graph',
+    'contemplative learning platform',
+  ],
+})
 
 export default function HomePage() {
   return (
@@ -171,57 +188,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h4 className="font-serif text-sm mb-4">The Library</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground font-sans">
-                <li><Link href="/library" className="hover:text-foreground transition-colors">Canon</Link></li>
-                <li><Link href="/civilizations" className="hover:text-foreground transition-colors">Civilisations</Link></li>
-                <li><Link href="/learning-paths" className="hover:text-foreground transition-colors">Learning Paths</Link></li>
-                <li><Link href="/glossary" className="hover:text-foreground transition-colors">Glossary</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-serif text-sm mb-4">Explore</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground font-sans">
-                <li><Link href="/timelines" className="hover:text-foreground transition-colors">Timelines</Link></li>
-                <li><Link href="/maps" className="hover:text-foreground transition-colors">Sacred Maps</Link></li>
-                <li><Link href="/figures" className="hover:text-foreground transition-colors">Historical Figures</Link></li>
-                <li><Link href="/symbols" className="hover:text-foreground transition-colors">Symbols</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-serif text-sm mb-4">Community</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground font-sans">
-                <li><Link href="/journal" className="hover:text-foreground transition-colors">Journal</Link></li>
-                <li><Link href="/community" className="hover:text-foreground transition-colors">Discussions</Link></li>
-                <li><Link href="/articles" className="hover:text-foreground transition-colors">Articles</Link></li>
-                <li><Link href="/scholars" className="hover:text-foreground transition-colors">Scholars</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-serif text-sm mb-4">About</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground font-sans">
-                <li><Link href="/about" className="hover:text-foreground transition-colors">About</Link></li>
-                <li><Link href="/membership" className="hover:text-foreground transition-colors">Membership</Link></li>
-                <li><Link href="/canon-policy" className="hover:text-foreground transition-colors">Canon Policy</Link></li>
-                <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-border">
-            <p className="font-serif text-sm text-muted-foreground">
-              The Living Library · A civilisational wisdom archive
-            </p>
-            <p className="text-xs text-muted-foreground font-sans mt-4 md:mt-0">
-              © {new Date().getFullYear()} The Living Library. Preserving wisdom for future generations.
-            </p>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }

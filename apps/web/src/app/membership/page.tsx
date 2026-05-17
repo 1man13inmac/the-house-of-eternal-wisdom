@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Membership Plans',
+  path: '/membership',
+  description:
+    'Compare Seeker, Member, and Scholar plans for The Living Library, including AI tools, annotations, study circles, and archive access.',
+  keywords: [
+    'membership plans',
+    'scholar membership',
+    'study assistant subscription',
+    'digital library memberships',
+    'stripe memberships',
+    'supabase members area',
+  ],
+})
 
 export default function MembershipPage() {
   return (
@@ -15,6 +32,10 @@ export default function MembershipPage() {
           <p className="text-muted-foreground font-sans max-w-xl mx-auto">
             Support the preservation of humanity's wisdom. Access advanced tools, annotations, 
             AI guidance, and exclusive content.
+          </p>
+          <p className="text-sm text-muted-foreground font-sans max-w-2xl mx-auto mt-4 leading-relaxed">
+            Membership infrastructure is scaffolded for secure billing, account provisioning, feature gating,
+            and role-based access using modern Stripe and Supabase patterns.
           </p>
         </div>
 

@@ -1,4 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Register for Early Access',
+  path: '/register',
+  description:
+    'Create your Living Library account to access memberships, learning paths, personal journals, and AI-guided study tools.',
+  keywords: [
+    'register living library',
+    'membership waitlist',
+    'AI study platform sign up',
+    'digital humanities membership',
+    'scholarly reading platform',
+  ],
+})
 
 export default function RegisterPage() {
   return (
@@ -12,6 +28,10 @@ export default function RegisterPage() {
         <h1 className="text-4xl font-serif font-light mb-4">Create Your Account</h1>
         <p className="text-muted-foreground font-sans leading-relaxed mb-8">
           Registration is currently in staged rollout. Join the waitlist to receive early access.
+        </p>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
+          Members get access to journal tools, annotations, structured reading progression, AI study guidance,
+          and premium learning paths with source-focused commentary.
         </p>
         <form className="border border-border bg-card p-6 space-y-4">
           <label className="block text-sm font-sans text-muted-foreground">

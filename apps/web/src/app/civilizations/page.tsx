@@ -1,5 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CIVILIZATIONS } from '../content'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Civilizations Explorer',
+  path: '/civilizations',
+  description:
+    'Explore wisdom traditions by civilization, including foundational texts, symbols, teachings, historical context, and related paths.',
+  keywords: [
+    'civilizations explorer',
+    'ancient civilizations texts',
+    'wisdom traditions',
+    'comparative civilizations',
+    'historical philosophy traditions',
+  ],
+})
 
 const EMOJIS: Record<string, string> = {
   egyptian: '𓂀',
@@ -47,8 +63,12 @@ export default function CivilizationsPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-light mb-4">Civilisations</h1>
           <p className="text-muted-foreground font-sans max-w-2xl">
-            Explore humanity's great wisdom civilisations through their primary texts, historical figures, 
+            Explore humanity's great wisdom civilisations through their primary texts, historical figures,
             symbols, cosmologies, and philosophical schools.
+          </p>
+          <p className="text-sm text-muted-foreground font-sans max-w-3xl mt-4 leading-relaxed">
+            Each civilization index supports source-first study with linked books, key concepts, and pathways
+            into comparative learning without collapsing important cultural distinctions.
           </p>
         </div>
 

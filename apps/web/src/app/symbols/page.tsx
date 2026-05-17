@@ -1,4 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Symbol Atlas',
+  path: '/symbols',
+  description:
+    'Browse the Symbol Atlas for historical symbol meanings, cultural context, and comparative interpretation across traditions.',
+  keywords: [
+    'symbol atlas',
+    'sacred symbols meaning',
+    'comparative symbolism',
+    'historical symbol context',
+    'religious symbols reference',
+  ],
+})
 
 const SYMBOLS = [
   { symbol: 'Yin-Yang', tradition: 'Taoist', meaning: 'Dynamic complementarity and cyclical balance.' },
@@ -23,6 +39,10 @@ export default function SymbolsPage() {
         <p className="text-muted-foreground font-sans leading-relaxed mb-10">
           Symbol entries preserve original context before comparison, helping readers distinguish historical use
           from modern reinterpretation.
+        </p>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
+          This atlas supports research into symbolic language, ritual usage, and civilizational transmission
+          without flattening tradition-specific meanings.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

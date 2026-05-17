@@ -1,4 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Historical Figures',
+  path: '/figures',
+  description:
+    'Explore influential historical figures, philosophers, sages, and scholars across civilizational traditions and text lineages.',
+  keywords: [
+    'historical philosophers',
+    'civilizational figures',
+    'major scholars in history',
+    'wisdom traditions leaders',
+    'philosophy biographies',
+  ],
+})
 
 const FIGURES = [
   { name: 'Laozi', tradition: 'Taoist', summary: 'Attributed author of the Tao Te Ching and archetype of the sage in withdrawal.' },
@@ -22,6 +38,10 @@ export default function FiguresPage() {
         <h1 className="text-4xl font-serif font-light mb-4">Historical Figures</h1>
         <p className="text-muted-foreground font-sans leading-relaxed mb-10">
           Profiles of teachers, commentators, rulers, and scholars whose work shaped the civilizational canon.
+        </p>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
+          Each profile is designed to connect biography with primary texts, historical influence, and
+          cross-civilizational relevance for deeper comparative study.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

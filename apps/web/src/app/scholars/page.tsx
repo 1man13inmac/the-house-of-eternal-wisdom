@@ -1,4 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Scholars and Curators',
+  path: '/scholars',
+  description:
+    'Meet the scholars, curators, translators, and reviewers who maintain canon quality, source integrity, and editorial governance.',
+  keywords: [
+    'scholars and curators',
+    'translation advisors',
+    'editorial governance',
+    'knowledge archive curation',
+    'peer review content platform',
+  ],
+})
 
 const SCHOLARS = [
   { name: 'Archive Curators', role: 'Primary source indexing and lineage tracking.' },
@@ -19,6 +35,10 @@ export default function ScholarsPage() {
         <h1 className="text-4xl font-serif font-light mb-4">Scholars</h1>
         <p className="text-muted-foreground font-sans leading-relaxed mb-10">
           Scholars and curators sustain quality through review, sourcing discipline, and editorial governance.
+        </p>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
+          This role structure supports transparent quality assurance for textual lineage, citation standards,
+          comparative interpretation, and community moderation.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {SCHOLARS.map((item) => (

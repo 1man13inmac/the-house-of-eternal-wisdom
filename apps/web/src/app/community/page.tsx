@@ -1,4 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '../seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Community Discussions',
+  path: '/community',
+  description:
+    'Join citation-backed community discussions, study circles, and moderated scholarly conversation across philosophy, religion, symbolism, and history.',
+  keywords: [
+    'scholarly discussion forum',
+    'citation based community',
+    'study circles',
+    'philosophy discussion',
+    'comparative religion community',
+    'moderated intellectual community',
+  ],
+})
 
 const CHANNELS = [
   { name: 'Text Study Circles', description: 'Slow-reading groups organized around primary sources.' },
@@ -20,6 +37,11 @@ export default function CommunityPage() {
         <p className="text-muted-foreground font-sans leading-relaxed mb-10">
           Discussion spaces are designed for rigor, generosity, and citation-backed dialogue.
         </p>
+        <div className="mb-8 border border-border bg-card p-5 text-sm text-muted-foreground font-sans leading-relaxed">
+          Community participation emphasizes source references, charitable reading, and long-form reflection.
+          Low-effort claims, fabricated quotes, and inflammatory engagement patterns are filtered through
+          moderation and governance rules aligned to the canon standard.
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {CHANNELS.map((channel) => (
             <article key={channel.name} className="border border-border bg-card p-6">
