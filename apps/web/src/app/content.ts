@@ -39,6 +39,28 @@ export type Civilization = {
   relatedCivilizationSlugs?: string[]
 }
 
+export type HistoricalFigure = {
+  slug: string
+  name: string
+  alternativeNames?: string[]
+  lifespan: string
+  dates?: { birth?: number; death?: number; era?: string }
+  region: string
+  tradition: string
+  field: string
+  knownFor: string
+  summary: string
+  biography: string
+  majorWorks?: string[]
+  philosophy?: string
+  historicalContext?: string
+  legacyInfluence?: string
+  relatedFigures?: string[]
+  relatedCivilizations?: string[]
+  primarySources?: string[]
+  recommendedBooks?: string[]
+}
+
 export const DIFFICULTY_LABELS = {
   SEED: 'Introductory',
   FOUNDATION: 'Foundation',
